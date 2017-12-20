@@ -4,7 +4,7 @@
 * [原型链与继承](yuan-xing-lian-yu-ji-cheng.md)
 * [Nodejs 消息队列](nodejs-xiao-xi-dui-lie.md)
 * 超神所需的 API
-  * Object
+  * [Object](object.md)
   * Array
 * Currying \(柯里化\)
 * Thunk
