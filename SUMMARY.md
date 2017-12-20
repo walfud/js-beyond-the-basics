@@ -12,6 +12,6 @@
   * Promise
 * [不可不知的三方库/框架](bu-ke-bu-zhi-de-san-fang-ku.md)
   * [工具集: lodash or underscore](bu-ke-bu-zhi-de-san-fang-ku/lodash.md)
-  * [服务器框架: Koa2 or Express?](bu-ke-bu-zhi-de-san-fang-ku/koa2-or-express.md)
+  * [服务器框架: koa2 or express?](bu-ke-bu-zhi-de-san-fang-ku/koa2-or-express.md)
 * webpack
 
