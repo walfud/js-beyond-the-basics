@@ -162,3 +162,8 @@ Nodejs 就是通过 Poll Phase, 对 IO 事件的等待和内核异步事件的�
 [The Node.js Event Loop, Timers, and process.nextTick()](https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/)
 [不同的event loop](https://cnodejs.org/topic/5a9108d78d6e16e56bb80882)
 [libuv 源码](https://github.com/libuv/libuv/tree/master)
+
+## Contribute
+
+已托管到 Github. 有问题或者修改意见, [点击这里给我提 issue](https://github.com/walfud/js-beyond-the-basics/issues/new).
+也欢迎一起写点儿有用的东西, feel free to PR.
