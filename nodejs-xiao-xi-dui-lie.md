@@ -2,10 +2,22 @@
 
 Nodejs 和浏览器中的消息循环可能不一样. 这里我们只讨论 Nodejs Event Loop 的原理.
 
-源码参照的当下最新的 Nodejs v9.7.1, 对应 libUV 是 v1.x.
+源码参照的当下最新的 Nodejs v9.7.1, 对应 V8 版本 v6.2.414, libUV 是 v1.19.2.
 
 ## Nodejs 总体架构
 
+说道 Nodejs 架构, 首先要直到 Nodejs 与 V8 和 libUV 的关系和作用:
+
+* V8: 执行 JS 的引擎. 也就是翻译 JS. 包括我们熟悉的编译优化, 垃圾回收等等.
+* libUV: 提供 async I/O, 提供消息循环. 可见, 是操作系统 API 层的一个抽象层.
+
+那么 Nodejs 如何组织它们呢? 如下图:
+
+![](https://cdn-images-1.medium.com/max/800/1*EG8QTDkYk-PZYYk7QZThVg.png)
+
+Nodejs 通过一层 C++ Binding, 把 JS 传入 V8, V8 解析后交给 libUV 发起 asnyc I/O, 并等待消息循环调度. 再看看下面的图: 
+
+![](https://cdn-images-1.medium.com/max/800/1*lkkdFLw5vh1bZJl8ysOAng.jpeg)
 
 
 ## Nodejs 线程模型
@@ -73,6 +85,18 @@ Nodejs 就是通过 Poll Phase, 对 IO 事件的等待和内核异步事件的�
 
 专门处理一些 close 类型的回调. 比如 `socket.on('close', ...)`. 用于资源清理.
 
+
+## process.nextTick 和 Promise
+
+可以看到, 消息循环的图中并没有涉及到 `process.nextTick` 以及 `Promise` 的回调. 那么这两个回调有什么特殊线性呢? 
+
+这个队列先保存保证所有的 `process.nextTick` 回调, 然后将所有的 `Promise` 回调追加在后面. 最终在每个 Phase 结束的时候一次性拿出来执行. 
+
+此外, 不同于 Phase 阶段, `process.nextTick` 以及 `Promise` 中回调的数量是不受限制的. 也就是说, 如果一直往这个队列中加入回调, 那么整个消息循环就会被 "卡住".
+
+我们用一张图来看看 `process.nextTick` 以及 `Promise`:
+
+![](/assets/micro-queue.png)
 
 ## FAQ
 
