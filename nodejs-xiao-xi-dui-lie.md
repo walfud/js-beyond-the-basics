@@ -88,15 +88,27 @@ Nodejs 就是通过 Poll Phase, 对 IO 事件的等待和内核异步事件的�
 >
 > setImmediate(() => console.log(2))
 > setTimeout(() => console.log(1))
->
-> sleep(10) // 休眠 10ms, 假设由他人提供
 > ```
-> 答案: 1 2
+> 答案: 可能是 1 2, 也可能是 2 1
 
 我们从原理的角度看看这道消息循环的基础问题.
 
-1. 首先, Nodejs 启动, 初始化环境后加载我们的 JS 代码(index.js)
-执行 JS 代码是 v8 的工作. 它执行 setImmediate 后, 将回调参数放入了 Check Phase 所在的队列.
+首先, Nodejs 启动, 初始化环境后加载我们的 JS 代码(index.js). 发生了两件事(此时尚未进入消息循环环节):
+
+    `setImmediate` 向 Check Phase 中添加了回调 `console.log(2)`
+    `setTimeout` 向 Timer Phase 中添加了回调 `console.log(1)`
+
+这时候, 要初始化阶段完毕, 要进入 Nodejs 消息循环了, 如下图:
+
+![](/assets/setTimeout_setImmediate3.png)
+
+为什么会有两种输出呢? 接下来一步很关键:
+
+当执行到 Timer Phase 时, 会发生两种可能. 因为每一轮迭代刚刚进入 Timer Phase 时会取系统时间保存起来, 以 ms(毫秒) 为最小单位.
+
+1. 如果 Timer Phase 中回调预设的时间 > 消息循环所保存的时间, 则执行 Timer Phase 中的该回调. 这种情况下先输出 1, 直到 Check Phase 执行后, 输出 2. 总的来说, 结果是 1 2.
+
+2. 如果运行比较快, Timer Phase 中回调预设的时间可能刚好等于消息循环所保存的时间, 这种情况下, Timer Phase 中的回调得不到执行, 则继续下一个 Phase. 直到 Check Phase, 输出 2. 然后等下一轮迭代的 Timer Phase, 这时的时间一定是满足 "Timer Phase 中回调预设的时间 > 消息循环所保存的时间" 的, 所以 `console.log(1)` 得到执行, 输出 1. 总的来说, 结果就是 2 1.
 
 ### `setTimeout(..., 0)` 是否可以代替 `setImmediate` 呢?
 
