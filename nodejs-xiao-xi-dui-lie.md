@@ -160,6 +160,7 @@ Nodejs 就是通过 Poll Phase, 对 IO 事件的等待和内核异步事件的�
 [Node 定时器详解](http://www.ruanyifeng.com/blog/2018/02/node-event-loop.html)
 [Node.js event loop workflow & lifecycle in low level](http://voidcanvas.com/nodejs-event-loop/)
 [The Node.js Event Loop, Timers, and process.nextTick()](https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/)
+[Handling IO — NodeJS Event Loop Part 4](https://jsblog.insiderattack.net/handling-io-nodejs-event-loop-part-4-418062f917d1)
 [不同的event loop](https://cnodejs.org/topic/5a9108d78d6e16e56bb80882)
 [libuv 源码](https://github.com/libuv/libuv/tree/master)
 
