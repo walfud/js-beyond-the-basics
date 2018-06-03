@@ -61,3 +61,25 @@
 
 更多关于 &lt;类型转换&gt; 的内容, 可以参考这里休闲一下: [https://github.com/walfud/zhuangbility](https://github.com/walfud/zhuangbility)
 
+
+
+### 短路操作符
+
+##### &&
+
+一般用于判断前置条件
+
+```js
+condition && func()    // condition 为真才执行 func, 否则返回 condition 的值
+```
+
+##### \|\|
+
+一般用于数据兜底
+
+```js
+mayEmptyValue || 123    // mayEmptyValue 为真则将其返回, 否则返回 123
+```
+
+
+
